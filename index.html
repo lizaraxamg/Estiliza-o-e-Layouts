@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega II - Estilização e Layouts</title>
+
+    <style>
+        /* =========================================================
+           TODO O CSS MODULAR ESTÁ AQUI DENTRO DA TAG <style>
+           ========================================================= */
+
+        /* --- 1. DESIGN SYSTEM / VARIÁVEIS (REQUISITO) --- */
+        :root {
+            /* Cores (Mínimo 8) */
+            --color-primary: #007bff;
+            --color-secondary: #6c757d;
+            --color-success: #28a745;
+            --color-error: #dc3545;
+            --color-link: #0056b3;
+            --color-neutral-light: #f8f9fa;
+            --color-neutral-medium: #dee2e6;
+            --color-neutral-dark: #343a40;
+
+            /* Tipografia (Mínimo 5 Tamanhos) */
+            --font-base-size: 1rem;
+            --font-size-sm: 0.875rem;
+            --font-size-lg: 1.25rem;
+            --font-size-h1: 2.5rem;
+            --font-size-h2: 2rem;
+
+            /* Espaçamento Modular (8px, 16px, 24px, 32px, 48px, 64px) */
+            --spacing-1x: 0.5rem;   /* 8px */
+            --spacing-2x: 1rem;     /* 16px */
+            --spacing-3x: 1.5rem;   /* 24px */
+            --spacing-4x: 2rem;     /* 32px */
+            --spacing-6x: 3rem;     /* 48px */
+            --spacing-8x: 4rem;     /* 64px */
+
+            /* Breakpoints (Mínimo 5) */
+            --breakpoint-sm: 576px;
+            --breakpoint-md: 768px;
+            --breakpoint-lg: 992px;
+            --breakpoint-xl: 1200px;
+        }
+
+        /* --- 2. BASE (RESET E TIPOGRAFIA) --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: sans-serif;
+            font-size: var(--font-base-size);
+            color: var(--color-neutral-dark);
+            background-color: var(--color-neutral-light);
+        }
+        h1, h2, h3 {
+            margin-bottom: var(--spacing-2x);
+            color: var(--color-neutral-dark);
+        }
+        h1 { font-size: var(--font-size-h1); }
+        h2 { font-size: var(--font-size-h2); }
+        p { margin-bottom: var(--spacing-2x); line-height: 1.6; }
+        a { color: var(--color-link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* --- 3. LAYOUT PRINCIPAL (GRID E FLEXBOX/RESPONSIVIDADE) --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: var(--spacing-4x) auto;
+            padding: 0;
+        }
+
+        /* GRID CUSTOMIZADO (12 Colunas) */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--spacing-3x); /* 24px de espaçamento */
+        }
+
+        /* Áreas do Grid para Desktop */
+        header { grid-column: 1 / span 12; }
+        aside { grid-column: 1 / span 4; } /* Sidebar 4 colunas */
+        main { grid-column: 5 / span 8; }  /* Conteúdo Principal 8 colunas */
+        footer { grid-column: 1 / span 12; }
+
+        /* HEADER E NAVEGAÇÃO (Com Flexbox) */
+        .nav-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-2x) 0;
+            background-color: white;
+            border-bottom: 2px solid var(--color-neutral-medium);
+        }
+        .nav-menu ul {
+            display: flex; /* Flexbox para itens do menu */
+            list-style: none;
+        }
+        .nav-menu ul li a {
+            padding: var(--spacing-1x) var(--spacing-2x);
+            display: block;
+        }
+        .nav-menu .menu-mobile-toggle { /* Menu Hambúrguer (Invisível no Desktop) */
+            display: none;
+        }
+
+        /* --- 4. COMPONENTES DE INTERFACE --- */
+
+        /* BOTÕES (Estados Visuais) */
+        .btn {
+            padding: var(--spacing-1x) var(--spacing-2x);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: var(--font-base-size);
+            transition: background-color 0.2s, opacity 0.2s;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Cor mais escura para hover */
+        }
+        .btn-primary:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        .btn:disabled {
+            background-color: var(--color-neutral-medium);
+            color: var(--color-secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* CARDS RESPONSIVOS (Flexbox) */
+        .card-container {
+            display: flex;
+            gap: var(--spacing-3x);
+            flex-wrap: wrap; /* Permite que os cards quebrem a linha */
+        }
+        .card {
+            flex: 1 1 300px; /* Cresce, encolhe, base de 300px (Responsivo) */
+            background-color: white;
+            border: 1px solid var(--color-neutral-medium);
+            border-radius: 8px;
+            padding: var(--spacing-3x);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: bold;
+            color: white;
+            background-color: var(--color-secondary);
+        }
+        .badge-primary { background-color: var(--color-primary); }
+
+        /* FEEDBACK (Alertas) */
+        .alert {
+            padding: var(--spacing-2x);
+            border-radius: 4px;
+            margin-bottom: var(--spacing-3x);
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        /* --- 5. RESPONSIVIDADE (MEDIA QUERIES) --- */
+
+        /* Telas Médias (MD e abaixo) - Foco em Layout e Grid */
+        @media (max-width: var(--breakpoint-md)) {
+            .grid-layout {
+                /* Sidebar e Main ocupam toda a largura */
+                grid-template-columns: 1fr; 
+                gap: var(--spacing-2x);
+            }
+            aside, main {
+                grid-column: 1 / span 1; /* Ocupa 1 coluna (100% da largura) */
+            }
+            /* Menu Hambúrguer aparece */
+            .nav-menu ul {
+                display: none; /* Esconde menu padrão */
+            }
+            .nav-menu .menu-mobile-toggle {
+                display: block; 
+                font-size: var(--font-size-lg);
+            }
+        }
+
+        /* Telas Pequenas (SM e abaixo) - Ajuste Fino */
+        @media (max-width: var(--breakpoint-sm)) {
+            h1 { font-size: var(--font-size-h2); }
+            .container {
+                width: 95%; /* Aumenta um pouco a largura para usar mais espaço */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container grid-layout">
+
+        <header>
+            <nav class="nav-menu">
+                <h1>Meu Portfólio</h1>
+                <div class="menu-mobile-toggle">☰</div>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li class="dropdown">
+                        <a href="#">Projetos ▼</a>
+                        </li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <aside>
+            <h2>Sobre Mim</h2>
+            <p>Este é o conteúdo da barra lateral (4 colunas no desktop).</p>
+            <p>Utilizada para navegação ou informações secundárias.</p>
+        </aside>
+
+        <main>
+            <div class="alert alert-error">
+                Alerta: Você tem um erro no formulário! (Componente de Feedback)
+            </div>
+
+            <h2>Sistema de Cards Responsivos</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3>Projeto Alpha <span class="badge badge-primary">NOVO</span></h3>
+                    <p>Descrição curta do projeto, usando espaçamento modular e tipografia definida.</p>
+                    <button class="btn btn-primary">Ver Detalhes</button>
+                </div>
+                <div class="card">
+                    <h3>Projeto Beta <span class="badge">LEGADO</span></h3>
+                    <p>Card estilizado com sombra e borda usando variáveis.</p>
+                    <button class="btn btn-primary" disabled>Em Desenvolvimento</button>
+                </div>
+                <div class="card">
+                    <h3>Projeto Gama</h3>
+                    <p>Este card tem uma base de 300px, usando Flexbox para se adaptar à linha.</p>
+                    <button class="btn btn-primary">Acessar</button>
+                </div>
+            </div>
+
+            <br><br>
+
+            <h2>Formulário Estilizado</h2>
+            <form>
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" style="
+                    display: block;
+                    width: 100%;
+                    padding: var(--spacing-1x);
+                    margin-bottom: var(--spacing-2x);
+                    border: 1px solid var(--color-neutral-medium);
+                    border-radius: 4px;
+                " required>
+
+                <label for="email">E-mail</label>
+                <input type="email" id="email" style="
+                    display: block;
+                    width: 100%;
+                    padding: var(--spacing-1x);
+                    margin-bottom: var(--spacing-3x);
+                    border: 1px solid var(--color-error); /* Exemplo de validação visual */
+                    border-radius: 4px;
+                " placeholder="Este campo está inválido" required>
+
+                <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+            </form>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2025 - Todos os direitos reservados. Footer em 12 colunas.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
